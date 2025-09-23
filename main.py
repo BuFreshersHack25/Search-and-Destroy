@@ -12,15 +12,18 @@ supabase: Client = create_client(url,key)
 #print(bcrypt.hashpw("hashed_pw_1".encode("utf-8"), bcrypt.gensalt(14)))
 
 def login(username: str, password: str) -> bool:
-
-    response = supabase.table("users").select("password").eq("username", username).execute()
-    print(response)
-
-    if response.data:
-        stored_hash = response.data[0]["password"].encode("utf-8")
-        return bcrypt.checkpw(password.encode("utf-8"), stored_hash)
-    elif (response.data[0] != None):
-         return response.data[0]["password"] == password
+    try:
+        response = supabase.table("users").select("password").eq("username", username).execute()
+        #print(response)
+        if response.data:
+            stored_hash = response.data[0]["password"].encode("utf-8")
+            return bcrypt.checkpw(password.encode("utf-8"), stored_hash)
+        elif (response.data[0] != None):
+            return response.data[0]["password"] == password
+    except IndexError:
+        print("Please check your username is valid")
+    except Exception:
+        print("Please contact support")
 
 def register(username,password,email):
     try:
@@ -50,4 +53,4 @@ def register(username,password,email):
 username = "bob"
 password_input = "hashed_pw_2"
 
-print(register("steve","hashed_pw_4","steve@googlemail.com"))
+print(login("steve","hashed_pw_4"))
