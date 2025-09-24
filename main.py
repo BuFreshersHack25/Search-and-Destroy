@@ -1,15 +1,19 @@
-import os,bcrypt,re,base64,time
+import os,bcrypt,re,base64,time,subprocess
 from supabase import create_client, Client
 from dotenv import load_dotenv
 from postgrest.exceptions import APIError
 from flask import Flask,Response,request,render_template,redirect,url_for,session
+from pyngrok import ngrok
+
 app = Flask(__name__)
+
+
 
 load_dotenv()
 url: str = os.environ.get("SUPABASE_URL")
 key: str = os.environ.get("SUPABASE_KEY")
 app.secret_key = os.environ.get("FLASK_SECRET_KEY")
-
+ngrok.set_auth_token(os.environ.get("NGROK_API_KEY"))
 
 
 supabase: Client = create_client(url,key)
@@ -52,7 +56,11 @@ def register(username,password,email):
             print(error)
             return False
 
-
+def start_ngrok():
+    public_url = ngrok.connect(5000)  # start tunnel
+    print(" * ngrok tunnel URL:", public_url)
+    return public_url
+start_ngrok()
 @app.route('/')
 def index():
   return render_template('index.html')
