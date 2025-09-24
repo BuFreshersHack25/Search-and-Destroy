@@ -1,12 +1,318 @@
-#camera {
-    margin: 20px auto;
-    border: 2px solid #333;
-    border-radius: 10px;
-    overflow: hidden;
-    width: 300px;
-    height: 240px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: black;
-  }
+/* --- GLOBAL STYLES --- */
+
+:root {
+  --accent-blue: #4dabf7;
+  --deep-navy: #0B0C20;
+  --text-color: #f0f0f0;
+  --subtle-gray: #aaa;
+}
+
+html, body {
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  background-color: var(--deep-navy);
+  color: var(--text-color);
+}
+
+/* --- CAMERA VIEW (FILLS ENTIRE SCREEN) --- */
+.camera-view {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  background-color: #000; /* Fallback for no camera */
+}
+
+#cameraVideo, #cameraCanvas {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  position: absolute;
+  top: 0;
+  left: 0;
+  transition: opacity 0.4s ease-in-out;
+}
+
+/* --- UI OVERLAY (FLOATS ON TOP) --- */
+.ui-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem 0;
+  pointer-events: none;
+}
+
+.top-controls {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  padding: 0 1.5rem;
+  pointer-events: all;
+}
+
+.camera-controls {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  padding: 0 1.5rem;
+  margin-bottom: 40px;
+  box-sizing: border-box;
+  align-items: center;
+  pointer-events: all;
+}
+
+.camera-controls.is-captured {
+  justify-content: space-between;
+}
+
+.action-button {
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 2px solid rgba(255, 255, 255, 0.7);
+  border-radius: 50%;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.action-button:hover {
+  transform: scale(1.05);
+  border-color: var(--accent-blue);
+}
+
+#shutterBtn {
+  width: 70px;
+  height: 70px;
+}
+#shutterBtn .shutter-inner {
+  width: 58px;
+  height: 58px;
+  background: white;
+  border-radius: 50%;
+  transition: all 0.3s ease;
+}
+#shutterBtn:hover .shutter-inner {
+  transform: scale(0.95);
+  background: var(--accent-blue);
+}
+
+#getInfoBtn, #retakeBtn {
+  width: 60px;
+  height: 60px;
+  font-size: 1.8rem;
+}
+
+#getInfoBtn {
+  background: var(--accent-blue);
+  border-color: white;
+}
+
+.top-button-container {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 999px;
+  padding: 0.25rem;
+  margin-right: 10px;
+
+}
+
+.top-button {
+  width: 50px;
+  height: 50px;
+  font-size: 1.5rem;
+  background: transparent;
+  border: none;
+}
+
+/* --- RESULT BOTTOM SHEET --- */
+#resultSheet {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  z-index: 20;
+  background: #161829;
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+  padding: 1rem;
+  box-shadow: 0 -10px 40px rgba(0,0,0,0.5);
+  transform: translateY(110%);
+  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  max-height: 80vh;
+  display: flex;
+  flex-direction: column;
+}
+
+#resultSheet.is-visible {
+  transform: translateY(0);
+}
+
+.drag-handle {
+  width: 40px;
+  height: 5px;
+  background: var(--subtle-gray);
+  border-radius: 2.5px;
+  margin: 0 auto 1rem auto;
+  flex-shrink: 0;
+  cursor: pointer;
+}
+
+.result-content {
+  overflow-y: auto;
+}
+
+.result-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+#resultImage {
+  width: 80px;
+  height: 80px;
+  border-radius: 12px;
+  object-fit: cover;
+}
+
+#resultTitle {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: var(--accent-blue); /* FIX: Was --accent-light which is not defined */
+}
+
+#resultBody {
+  line-height: 1.6;
+  color: var(--text-color);
+}
+
+#resultBody p {
+  margin-bottom: 1rem;
+}
+
+/* --- NAVIGATION OVERLAY --- */
+.nav-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 30;
+  background: rgba(11, 12, 32, 0.9);
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+.nav-overlay.is-visible {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.nav-overlay #closeNavBtn {
+  position: absolute;
+  top: 1.5rem;
+  right: 1.5rem;
+}
+
+.main-nav {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+}
+
+.nav-link {
+  color: var(--text-color);
+  text-decoration: none;
+  font-size: 1.5rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.nav-overlay.is-visible .nav-link {
+  opacity: 1;
+  transform: translateY(0);
+}
+.nav-overlay.is-visible .nav-link:nth-child(1) { transition-delay: 0.1s; }
+.nav-overlay.is-visible .nav-link:nth-child(2) { transition-delay: 0.15s; }
+.nav-overlay.is-visible .nav-link:nth-child(3) { transition-delay: 0.2s; }
+.nav-overlay.is-visible .nav-link:nth-child(4) { transition-delay: 0.25s; }
+.nav-overlay.is-visible .nav-link:nth-child(5) { transition-delay: 0.3s; }
+
+.nav-link:hover, .nav-link.active {
+  color: var(--accent-blue);
+}
+
+/* --- UTILITIES --- */
+.is-hidden { display: none !important; }
+
+.loader-container {
+  text-align: center;
+  padding: 2rem;
+}
+
+/* Added missing Bootstrap spinner styles for animation */
+@keyframes spinner-border {
+  to { transform: rotate(360deg); }
+}
+
+.spinner-border {
+  display: inline-block;
+  width: 3rem;
+  height: 3rem;
+  vertical-align: -0.125em;
+  border: 0.25em solid currentColor;
+  border-right-color: transparent;
+  border-radius: 50%;
+  animation: .75s linear infinite spinner-border;
+  color: var(--accent-blue);
+}
+
+.spinner-border-sm {
+  width: 1.25rem; /* Adjusted for better visibility in button */
+  height: 1.25rem;
+  border-width: 0.2em;
+}
+
+/* Added missing Bootstrap accessibility class */
+.visually-hidden {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}

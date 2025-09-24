@@ -5,13 +5,61 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Main page</title> <!-- update to propper name -->
   <link rel="stylesheet" href="static/styles.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
 </head>
+
+
 <div id="camera"></div>
 <button id="capture-btn" onclick="take_photo()">Take Snapshot</button>
 <div class = "after-cap" id = "ac" >
     <button onclick="window.location.reload()">Retake</button>       
     <button onclick="s()" type="submit">Submit</button>
 </div>
-      
+
+ <main class="camera-view">
+    <video id="cameraVideo" autoplay playsinline></video>
+    <canvas id="cameraCanvas" style="opacity: 0;"></canvas>
+  </main>
+
+  <div class="ui-overlay">
+    <div class="top-controls">
+      <div class="top-button-container">
+        <button id="menuBtn" class="action-button top-button" aria-label="Open Menu"><i class="bi bi-list"></i></button>
+      </div>
+    </div>
+    <div class="camera-controls">
+      <button id="retakeBtn" class="action-button is-hidden" aria-label="Retake Picture"><i class="bi bi-x-lg"></i></button>
+      <button id="shutterBtn" class="action-button" aria-label="Take Picture" onclick="take_photo()"><div class="shutter-inner"></div></button>
+      <button id="getInfoBtn" class="action-button is-hidden" aria-label="Get Info" onclick="s()"><i class="bi bi-check-lg"></i></button>
+    </div>
+  </div>
+
+  <div id="resultSheet">
+    <div class="drag-handle"></div>
+    <div class="result-content">
+      <div class="result-header">
+        <img id="resultImage" src="80x80 placeholder" alt="Captured image">
+        <h2 id="resultTitle">Analyzing...</h2>
+      </div>
+      <div id="resultBody">
+        <div class="loader-container">
+          <div class="spinner-border" role="status">
+            <span class="visually-hidden">Loading...</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="navOverlay" class="nav-overlay">
+    <button id="closeNavBtn" class="action-button top-button" aria-label="Close Menu"><i class="bi bi-x-lg"></i></button>
+    <nav class="main-nav">
+      <a href="#home" class="nav-link active"><i class="bi bi-house-door-fill"></i> Home</a>
+      <a href="#species" class="nav-link"><i class="bi bi-exclamation-triangle-fill"></i> Species</a>
+      <a href="#settings" class="nav-link"><i class="bi bi-gear-fill"></i> Settings</a>
+      <a href="#leaderboard" class="nav-link"><i class="bi bi-trophy-fill"></i> Leaderboard</a>
+      <a href="#logout" class="nav-link"><i class="bi bi-box-arrow-right"></i> Log Out</a>
+    </nav>
+  </div>
 <script src="static/webcam.js"></script>
 <script src="static/main.js"></script>
