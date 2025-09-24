@@ -2,16 +2,20 @@ import os,bcrypt,re
 from supabase import create_client, Client
 from dotenv import load_dotenv
 from postgrest.exceptions import APIError
+from flask import Flask,Response,request,render_template,redirect,url_for,session
+app = Flask(__name__)
 
 load_dotenv()
 url: str = os.environ.get("SUPABASE_URL")
 key: str = os.environ.get("SUPABASE_KEY")
+app.secret_key = os.environ.get("FLASK_SECRET_KEY")
+
 
 
 supabase: Client = create_client(url,key)
 #print(bcrypt.hashpw("hashed_pw_1".encode("utf-8"), bcrypt.gensalt(14)))
 
-def login(username: str, password: str) -> bool:
+def login(username: str, password: str):
     try:
         response = supabase.table("users").select("password").eq("username", username).execute()
         #print(response)
@@ -23,7 +27,7 @@ def login(username: str, password: str) -> bool:
     except IndexError:
         print("Please check your username is valid")
     except Exception:
-        print("Please contact support")
+        print("Please contact support" + Exception)
 
 def register(username,password,email):
     try:
@@ -49,7 +53,33 @@ def register(username,password,email):
             return False
 
 
+@app.route('/')
+def index():
+  return render_template('index.html')
 
+@app.route('/login')
+def login_page():
+    return render_template('login.html')
+@app.route('/login', methods=['POST'])
+def log_in():
+    username = request.form['username']
+    password = request.form['password']
+    print(password,type(password))
+    if(login(username,password)== True):
+        session["username"] = username # lazy writing fix later,also add session id.
+        return redirect(url_for('index'))
+    else:
+        print(type(username)) ## needs to redirect errors correctly
+        return username
+@app.route('/register') ## needs testing on flask
+def reg_page():
+    return render_template('register.html')
+@app.route('/register', methods=['POST'])
+def sign_up():
+    username = request.form['username']
+    password = request.form['password']
+    email = request.form['email']
+    return register(username,password,email) #deal with this
 username = "bob"
 password_input = "hashed_pw_2"
 
