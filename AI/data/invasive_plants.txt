@@ -4,14 +4,14 @@
 # Status = widely spread OR non-widely spread
 
 # Widely spread invasive plants
-Lysichiton americanus,American skunk cabbage,widely spread
-Gunnera tinctoria,Chilean rhubarb,widely spread
-Lagarosiphon major,Curly waterweed,widely spread
-Hydrocotyle ranunculoides,Floating pennywort,widely spread
-Heracleum mantegazzianum,Giant hogweed,widely spread
-Impatiens glandulifera,Himalayan balsam,widely spread
-Elodea nuttallii,Nuttall’s waterweed,widely spread
-Myriophyllum aquaticum,Parrot’s feather,widely spread
+Lysichiton americanus,American skunk cabbage,widely spread, NCBI:txid374417 
+Gunnera tinctoria,Chilean rhubarb,widely spread, NCBI:txid251266
+Lagarosiphon major,Curly waterweed,widely spread, NCBI:txid55468
+Hydrocotyle ranunculoides,Floating pennywort,widely spread,NCBI:txid554380
+Heracleum mantegazzianum,Giant hogweed,widely spread,NCBI:txid380077
+Impatiens glandulifera,Himalayan balsam,widely spread,
+Elodea nuttallii,Nuttall’s waterweed,widely spread,
+Myriophyllum aquaticum,Parrot’s feather,widely spread,
 
 # Non-widely spread invasive plants
 Alternanthera philoxeroides,Alligator weed,non-widely spread

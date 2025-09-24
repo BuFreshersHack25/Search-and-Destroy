@@ -2,3 +2,7 @@ torch
 torchvision
 transformers
 pillow
+bcrypt
+Flask
+python-dotenv
+supabase
