@@ -1,4 +1,4 @@
-import os,bcrypt,re
+import os,bcrypt,re,base64,time
 from supabase import create_client, Client
 from dotenv import load_dotenv
 from postgrest.exceptions import APIError
@@ -82,5 +82,12 @@ def sign_up():
     return register(username,password,email) #deal with this
 username = "bob"
 password_input = "hashed_pw_2"
+@app.route('/image', methods=['POST'])
+def image():
+  current_time = time.time()
+  filename = str(current_time) + ".jpeg"
+  imagedata = request.data[23:]
+  with open(filename, "wb") as img:
+    img.write(base64.decodebytes(imagedata))
 
 print(login("steve","hashed_pw_4"))
