@@ -486,3 +486,37 @@ body.login-page {
     stroke: white;
 }
 
+/* --- LOADER --- */
+.loader-container {
+      margin-bottom: 3rem;
+  }
+
+  .app-loader {
+      width: 100px;
+      height: 100px;
+  }
+  
+  .app-loader .radar-grid {
+      stroke: var(--subtle-gray);
+      stroke-width: 2;
+      fill: none;
+      transition: stroke 0.3s ease;
+  }
+  
+  .app-loader .radar-sweep {
+      fill: var(--radar-green);
+      opacity: 0.3;
+      transform-origin: center;
+      animation: sweep 4s linear infinite;
+  }
+  
+  .app-loader .radar-target {
+      fill: var(--accent-red);
+      
+  }
+  
+  /* --- CSS ANIMATIONS --- */
+  @keyframes sweep {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+  }

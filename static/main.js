@@ -82,7 +82,7 @@ document.addEventListener('DOMContentLoaded', () => {
       updateUI(UI_STATES.SUBMITTING);
       //resultImage.src = "placeholder 80x80"; // Placeholder
       resultTitle.textContent = "Analyzing...";
-      resultBody.innerHTML = `<div class="loader-container"><div class="spinner-border" role="status"><span class="visually-hidden">Loading...</span></div></div>`;
+      window.injectLoader();
       showSheet();
 
       // Simulate API call delay
@@ -90,7 +90,7 @@ document.addEventListener('DOMContentLoaded', () => {
         resultTitle.textContent = "Example Species";
         resultBody.innerHTML = `<p>This is a sample description for the identified species. It would typically explain its characteristics and habitat.</p><p>This species is considered invasive. Citizens are advised to report sightings to the local authorities and not attempt to remove it themselves.</p>`;
         updateUI(UI_STATES.CAPTURED);
-      }, 1500);
+      }, 15000);
     };
 
     // Event Listeners
