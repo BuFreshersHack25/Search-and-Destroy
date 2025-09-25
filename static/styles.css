@@ -1,25 +1,38 @@
 /* --- GLOBAL STYLES --- */
-
 :root {
   --accent-blue: #4dabf7;
   --deep-navy: #0B0C20;
   --text-color: #f0f0f0;
   --subtle-gray: #aaa;
+  --radar-green: #2ecc71;
+  --accent-red: #e74c3c;
 }
 
-html, body {
+html {
   height: 100%;
+}
+
+body {
   width: 100%;
-  overflow: hidden;
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
   background-color: var(--deep-navy);
   color: var(--text-color);
+  /* FIX: Use min-height and vh for robust full-height */
+  min-height: 100vh; 
+  overflow-x: hidden; /* Prevent horizontal scroll */
+}
+
+/* --- LOGIN PAGE-SPECIFIC LAYOUT --- */
+/* FIX: Use display: grid for more robust centering */
+body.login-page {
+  display: grid;
+  place-items: center;
 }
 
 /* --- CAMERA VIEW (FILLS ENTIRE SCREEN) --- */
 .camera-view {
-   object-fit: cover;
+  object-fit: cover;
   position: absolute;
   top: 0;
   left: 0;
@@ -37,7 +50,7 @@ html, body {
   top: 0;
   left: 0;
   transition: opacity 0.4s ease-in-out;
-   z-index: 2;
+  z-index: 2;
   opacity: 1;
 }
 
@@ -61,6 +74,7 @@ html, body {
   align-items: center;
   padding: 1.5rem 0;
   pointer-events: none;
+  box-sizing: border-box;
 }
 
 .top-controls {
@@ -69,6 +83,7 @@ html, body {
   justify-content: flex-end;
   padding: 0 1.5rem;
   pointer-events: all;
+  box-sizing: border-box;
 }
 
 .camera-controls {
@@ -205,7 +220,7 @@ html, body {
 #resultTitle {
   font-size: 1.8rem;
   font-weight: 700;
-  color: var(--accent-blue); /* FIX: Was --accent-light which is not defined */
+  color: var(--accent-blue);
 }
 
 #resultBody {
@@ -325,3 +340,149 @@ html, body {
   white-space: nowrap !important;
   border: 0 !important;
 }
+
+/* --- LOGIN PAGE STYLES --- */
+.page-container {
+    width: 90%;
+    max-width: 400px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.form-box {
+    width: 100%;
+    padding: 2.5rem;
+    box-sizing: border-box;
+    margin-bottom: 2rem;
+    background: rgba(21, 23, 43, 0.5);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border-radius: 20px;
+}
+
+.form-group {
+    position: relative;
+    width: 100%;
+    margin-bottom: 1.5rem;
+}
+
+.form-group:last-of-type {
+    margin-bottom: 2.5rem;
+}
+
+.form-group i {
+    position: absolute;
+    top: 50%;
+    left: 15px;
+    transform: translateY(-50%);
+    color: var(--subtle-gray);
+    font-size: 1.2rem;
+    z-index: 1;
+}
+
+.form-input {
+    width: 100%;
+    padding: 1rem 1rem 1rem 3rem;
+    background: rgba(255, 255, 255, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-radius: 12px;
+    color: var(--text-color);
+    font-size: 1rem;
+    transition: border-color 0.3s ease;
+    box-sizing: border-box;
+}
+
+.form-input::placeholder {
+    color: var(--subtle-gray);
+}
+
+.form-input:focus {
+    outline: none;
+    border-color: var(--accent-blue);
+}
+
+.login-button {
+    width: 100%;
+    padding: 1rem;
+    background: var(--accent-blue);
+    border: none;
+    border-radius: 12px;
+    color: var(--deep-navy);
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.secondary-links {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.secondary-link {
+    color: var(--subtle-gray);
+    text-decoration: none;
+    font-size: 0.9rem;
+    transition: color 0.3s ease;
+}
+
+/* --- LOGO STYLES --- */
+.logo-container {
+    margin-bottom: 3rem;
+}
+
+.app-logo {
+    width: 100px;
+    height: 100px;
+}
+
+.app-logo .logo-glass {
+    stroke: var(--subtle-gray);
+    stroke-width: 8;
+    fill: none;
+    stroke-linecap: round;
+}
+
+.app-logo .logo-handle {
+    stroke: var(--subtle-gray);
+    stroke-width: 8;
+    fill: none;
+    stroke-linecap: round;
+    transition: stroke 0.3s ease, filter 0.3s ease;
+}
+
+.app-logo .logo-head {
+    fill: var(--subtle-gray);
+    transition: fill 0.3s ease, filter 0.3s ease;
+}
+
+.app-logo .logo-veins {
+    stroke: var(--subtle-gray);
+    stroke-width: 2;
+    fill: none;
+    stroke-linecap: round;
+    pointer-events: none;
+    transition: filter 0.3s ease, stroke 0.3s ease;
+}
+
+/* --- LOGO INTERACTION --- */
+.page-container:focus-within .app-logo .logo-head {
+  fill: var(--radar-green);
+}
+
+.page-container:focus-within .app-logo .logo-handle {
+  filter: drop-shadow(0 0 5px var(--accent-red));
+}
+
+.page-container:focus-within .app-logo .logo-veins {
+    filter: drop-shadow(0 0 3px white);
+    stroke: white;
+}
+

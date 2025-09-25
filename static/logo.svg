@@ -1,0 +1,26 @@
+    <svg class="app-logo" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+    <g>
+        <!-- Magnifying Glass -->
+        <circle class="logo-glass" cx="50" cy="50" r="45"/>
+        <line class="logo-glass" x1="82" y1="82" x2="110" y2="110"/>
+        
+        <!-- Spear (Scaled and positioned inside the glass) -->
+        <g transform="translate(50, 50) scale(0.6) translate(-60, -65)">
+            <!-- Leaf Shape -->
+            <path class="logo-head" d="M60 15 C 40 35, 40 55, 60 70 C 80 55, 80 35, 60 15 Z" />
+            <!-- Leaf Veins -->
+            <g class="logo-veins">
+                <line x1="60" y1="68" x2="60" y2="25" />
+                <path d="M60 55 C 52 51, 48 42, 45 38" />
+                <path d="M60 55 C 68 51, 72 42, 75 38" />
+                <path d="M60 45 C 54 41, 50 33, 48 29" />
+                <path d="M60 45 C 66 41, 70 33, 72 29" />
+            </g>
+            <!-- Shaft and Hilt Group -->
+            <g class="logo-handle">
+                <line x1="60" y1="115" x2="60" y2="70" />
+                <path d="M35 100 Q 60 95 85 100" />
+            </g>
+        </g>
+    </g>
+</svg>
