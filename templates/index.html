@@ -9,16 +9,9 @@
 </head>
 
 
-<div id="camera"></div>
-<button id="capture-btn" onclick="take_photo()">Take Snapshot</button>
-<div class = "after-cap" id = "ac" >
-    <button onclick="window.location.reload()">Retake</button>       
-    <button onclick="s()" type="submit">Submit</button>
-</div>
-
+<!-- <div id="camera"></div> -->
  <main class="camera-view">
-    <video id="cameraVideo" autoplay playsinline></video>
-    <canvas id="cameraCanvas" style="opacity: 0;"></canvas>
+    <div id="cameraVideo"></div>
   </main>
 
   <div class="ui-overlay">
@@ -29,8 +22,8 @@
     </div>
     <div class="camera-controls">
       <button id="retakeBtn" class="action-button is-hidden" aria-label="Retake Picture"><i class="bi bi-x-lg"></i></button>
-      <button id="shutterBtn" class="action-button" aria-label="Take Picture" onclick="take_photo()"><div class="shutter-inner"></div></button>
-      <button id="getInfoBtn" class="action-button is-hidden" aria-label="Get Info" onclick="s()"><i class="bi bi-check-lg"></i></button>
+      <button id="shutterBtn" class="action-button" aria-label="Take Picture"><div class="shutter-inner"></div></button>
+      <button id="getInfoBtn" class="action-button is-hidden" aria-label="Get Info"><i class="bi bi-check-lg"></i></button>
     </div>
   </div>
 

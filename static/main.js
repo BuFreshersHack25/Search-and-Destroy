@@ -1,3 +1,8 @@
+Webcam.set({
+ constraints: {
+   facingMode: 'environment'
+ }
+});
 Webcam.attach('#cameraVideo');
 var image_taken;
 document.addEventListener('DOMContentLoaded', () => {
@@ -42,7 +47,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- UI SIMULATION LOGIC ---
     function take_photo() {
       Webcam.snap( function(data_uri) {
-        document.getElementById("camera").innerHTML = '<img src="'+data_uri+'"/>';
+        document.getElementById("cameraVideo").innerHTML = '<img src="'+data_uri+'"/>';
         image_taken = data_uri;
         updateUI(UI_STATES.CAPTURED);
       });
@@ -88,7 +93,7 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     // Event Listeners
-    shutterBtn.addEventListener('click', take_photo());
+    shutterBtn.addEventListener('click', take_photo);
     retakeBtn.addEventListener('click', retakePicture);
     getInfoBtn.addEventListener('click', getSpeciesInfo);
     dragHandle.addEventListener('click', hideSheet);

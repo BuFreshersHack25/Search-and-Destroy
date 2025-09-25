@@ -19,13 +19,14 @@ html, body {
 
 /* --- CAMERA VIEW (FILLS ENTIRE SCREEN) --- */
 .camera-view {
-  position: fixed;
+   object-fit: cover;
+  position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
   z-index: 1;
-  background-color: #000; /* Fallback for no camera */
+  background-color: transparent; /* Fallback for no camera */
 }
 
 #cameraVideo, #cameraCanvas {
@@ -36,6 +37,14 @@ html, body {
   top: 0;
   left: 0;
   transition: opacity 0.4s ease-in-out;
+   z-index: 2;
+  opacity: 1;
+}
+
+#cameraVideo video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 /* --- UI OVERLAY (FLOATS ON TOP) --- */
