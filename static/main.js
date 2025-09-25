@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const shutterBtn = document.getElementById('shutterBtn');
     const retakeBtn = document.getElementById('retakeBtn');
     const getInfoBtn = document.getElementById('getInfoBtn');
-    const canvasEl = document.getElementById('cameraCanvas');
+    const canvasEl = document.getElementById('cameraVideo');
     const cameraControls = document.querySelector('.camera-controls');
     
     const resultSheet = document.getElementById('resultSheet');
@@ -45,12 +45,13 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     // --- UI SIMULATION LOGIC ---
-    function take_photo() {
+    const takePicture = () => {
       Webcam.snap( function(data_uri) {
         document.getElementById("cameraVideo").innerHTML = '<img src="'+data_uri+'"/>';
         image_taken = data_uri;
-        updateUI(UI_STATES.CAPTURED);
-      });
+      })
+      updateUI(UI_STATES.CAPTURED);
+     
     }
     const retakePicture = () => {
       updateUI(UI_STATES.STREAMING);
@@ -79,7 +80,7 @@ document.addEventListener('DOMContentLoaded', () => {
       xhr.open("POST", "/image", true);
       xhr.send(image_taken);
       updateUI(UI_STATES.SUBMITTING);
-      resultImage.src = "placeholder 80x80"; // Placeholder
+      //resultImage.src = "placeholder 80x80"; // Placeholder
       resultTitle.textContent = "Analyzing...";
       resultBody.innerHTML = `<div class="loader-container"><div class="spinner-border" role="status"><span class="visually-hidden">Loading...</span></div></div>`;
       showSheet();
@@ -93,7 +94,7 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     // Event Listeners
-    shutterBtn.addEventListener('click', take_photo);
+    shutterBtn.addEventListener('click', takePicture);
     retakeBtn.addEventListener('click', retakePicture);
     getInfoBtn.addEventListener('click', getSpeciesInfo);
     dragHandle.addEventListener('click', hideSheet);
