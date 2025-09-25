@@ -1,0 +1,22 @@
+<svg class="app-loader" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+        <g>
+            <!-- Radar Sweep -->
+            <path class="radar-sweep" d="M60 60 L60 5 A 55 55 0 0 1 108.7 85.5 Z" />
+
+            <!-- Radar Grid -->
+            <g class="radar-grid">
+                <circle cx="60" cy="60" r="55"/>
+                <circle cx="60" cy="60" r="35"/>
+                <line x1="60" y1="5" x2="60" y2="115"/>
+                <line x1="5" y1="60" x2="115" y2="60"/>
+            </g>
+            
+            <!-- Target: Potted Plant -->
+            <g class="radar-target" transform="translate(75, 30)">
+                <path d="M2 25 L18 25 L15 15 L5 15 Z" />
+                <path d="M9 15 L11 15 L11 8 L9 8 Z" />
+                <path d="M10 10 C 2 10, 5 2, 10 10 Z" />
+                <path d="M10 10 C 18 10, 15 2, 10 10 Z" />
+            </g>
+        </g>
+</svg>

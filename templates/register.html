@@ -1,13 +1,40 @@
-<!-- temp page. should be intergrated to login -->
+<!DOCTYPE html>
+<html lang="en">
 <head>
-    <link rel="stylesheet" href="static/styles.css">
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Register</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>S&D Register</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+  <link rel="stylesheet" href="static/styles.css">
 </head>
-<form action="/login" method="POST">
-    <input type="text" id="username" name="username" placeholder="Username" required>
-    <input type="password" id="password" name="password" placeholder="Password" required>
-    <input type="email" id="email" name="email" placeholder="email" required>
-    <button type="submit">Login</button>
-</form>
+<body class="login-page">
+ <div class="page-container">
+    <div class="logo-container"></div>
+    <form class="form-box" action="/login" method="POST">
+        <div class="form-group">
+               <i class="bi bi-person-fill"></i>
+            <input type="text" class="form-input has-error" placeholder="Username">
+            <div class="error-message is-visible">Username is already taken.</div>
+        </div>
+        
+        <div class="form-group">
+            <i class="bi bi-envelope-fill"></i>
+            <input type="email" class="form-input" placeholder="Email">
+            <div class="error-message">Please enter a valid email.</div>
+        </div>
+
+        <div class="form-group">
+            <i class="bi bi-lock-fill"></i>
+            <input type="password" class="form-input" placeholder="Password">
+            <div class="error-message">Password must be at least 8 characters.</div>
+        </div>
+        <button type="submit" class="login-button">Register</button>
+    </form>
+
+      <div class="secondary-links">
+      <a href="/login" class="secondary-link">Already have an account? Login</a>
+    </div>
+  </div>
+</body>
+<script src="static/logo.js"></script>
+</html>
