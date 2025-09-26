@@ -10,23 +10,23 @@
 <body class="login-page">
  <div class="page-container">
     <div class="logo-container"></div>
-    <form class="form-box" action="/login" method="POST">
+    <form class="form-box" action="/register" method="POST">
         <div class="form-group">
                <i class="bi bi-person-fill"></i>
-            <input type="text" class="form-input has-error" placeholder="Username">
-            <div class="error-message is-visible">Username is already taken.</div>
+            <input type="text" name = "username" class="form-input" placeholder="Username">
+            <div class="error-message is-visible" style = "display: {{  invld_u }};">Username is already taken.</div>
         </div>
         
         <div class="form-group">
             <i class="bi bi-envelope-fill"></i>
-            <input type="email" class="form-input" placeholder="Email">
-            <div class="error-message">Please enter a valid email.</div>
+            <input type="email" name = "email" class="form-input" placeholder="Email">
+            <div class="error-message" style = "display: {{ invld_e }} ;">Please enter a valid email.</div>
         </div>
 
         <div class="form-group">
             <i class="bi bi-lock-fill"></i>
-            <input type="password" class="form-input" placeholder="Password">
-            <div class="error-message">Password must be at least 8 characters.</div>
+            <input type="password" name = "password" class="form-input" placeholder="Password">
+            <div class="error-message" style = "display: {{ invld_p }}; ">Password must be at least 8 characters.</div>
         </div>
         <button type="submit" class="login-button">Register</button>
     </form>

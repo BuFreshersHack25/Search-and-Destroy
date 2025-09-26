@@ -26,21 +26,19 @@ def login(username: str, password: str):
         if response.data:
             stored_hash = response.data[0]["password"].encode("utf-8")
             return bcrypt.checkpw(password.encode("utf-8"), stored_hash)
-        elif (response.data[0] != None):
-            return response.data[0]["password"] == password
     except IndexError:
-        print("Please check your username is valid")
+        return "username"
     except Exception:
-        print("Please contact support" + Exception)
+        return "support"
 
 def register(username,password,email):
     try:
         if re.fullmatch(R"[^@]+@[^@]+\.[^@]+",email) == None:
             print("invalid email address")
-            return False
+            return "e"
         if re.fullmatch(R"^(?=.*[A-Za-z])(?=.*\d).{8,}$",password) == None:
             print("password must at least contain:8 chars,one number and one letter")
-            return False
+            return "p"
         else:
             supabase.table("users").insert({
                 "username": username,
@@ -49,11 +47,11 @@ def register(username,password,email):
             return True
   
     except APIError as error: 
-        if error.code == 2305:
+        if error.code == "23505":
             print("Username allready in use try another")
-            return False
+            return "u"
         else:
-            print(error)
+            print(error.code,type(error.code))
             return False
 
 def start_ngrok():
@@ -61,35 +59,56 @@ def start_ngrok():
     print(" * ngrok tunnel URL:", public_url)
     return public_url
 start_ngrok()
+
 @app.route('/')
 def index():
-  return render_template('index.html')
-
+  if 'username' in session:
+      return render_template('index.html')
+  else:
+      return "<script>alert('Unauthorised access please login');window.location.replace('/login')</script>"
 @app.route('/login')
 def login_page():
+    if 'username' in session:
+         return redirect(url_for('index'))
     return render_template('login.html')
 @app.route('/login', methods=['POST'])
 def log_in():
     username = request.form['username']
     password = request.form['password']
-    print(password,type(password))
-    if(login(username,password)== True):
+    login_state = login(username,password)
+    if(login_state== True):
         session["username"] = username # lazy writing fix later,also add session id.
         return redirect(url_for('index'))
+    elif(login_state == False):
+        return ("<script>alert('Your username or password is incorrect'))</script>")
+    elif (login_state == "username"):
+        return ("<script>alert('Please check your username is correct'))</script>")
     else:
-        print(type(username)) ## needs to redirect errors correctly
-        return username
+        return ("<script>alert('Please contact support'))</script>")
 @app.route('/register') ## needs testing on flask
 def reg_page():
-    return render_template('register.html')
+    if 'username' in session:
+      return render_template('index.html')
+    return render_template('register.html',invld_u = "none",invld_e = "none",invld_p = "none")
 @app.route('/register', methods=['POST'])
 def sign_up():
     username = request.form['username']
     password = request.form['password']
     email = request.form['email']
-    return register(username,password,email) #deal with this
-username = "bob"
-password_input = "hashed_pw_2"
+    state = register(username,password,email)
+    if(state == True):
+        session['username'] = username
+        return "<script>alert('Successfully registered');window.location.replace('/index')</script>"
+    elif(state == "u"):
+        return render_template("register.html",invld_u = "hidden", invld_p = "none",invld_e = "none")
+    elif(state == "p"):
+        return render_template("register.html",invld_u = "none", invld_p = "block",invld_e = "none")
+    elif(state == "e"):
+        return render_template("register.html",invld_u = "none", invld_p = "none",invld_e = "block")
+    else:
+        return "<script>alert('If you do not allready have an account with this email please contact support.');window.location.replace('/login');</script>"
+
+
 @app.route('/image', methods=['POST'])
 def image():
   current_time = time.time()
@@ -97,5 +116,3 @@ def image():
   imagedata = request.data[23:]
   with open(filename, "wb") as img:
     img.write(base64.decodebytes(imagedata))
-
-print(login("steve","hashed_pw_4"))
