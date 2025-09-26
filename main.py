@@ -2,7 +2,7 @@ import os,bcrypt,re,base64,time,subprocess
 from supabase import create_client, Client
 from dotenv import load_dotenv
 from postgrest.exceptions import APIError
-from flask import Flask,Response,request,render_template,redirect,url_for,session
+from flask import Flask,make_response,request,render_template,redirect,url_for,session,jsonify
 from pyngrok import ngrok
 
 app = Flask(__name__)
@@ -107,7 +107,34 @@ def sign_up():
         return render_template("register.html",invld_u = "none", invld_p = "none",invld_e = "block")
     else:
         return "<script>alert('If you do not allready have an account with this email please contact support.');window.location.replace('/login');</script>"
+@app.route('/logout', methods=['GET'])
+def logout():
+    session.clear()
+    return redirect(url_for("log_in"))
 
+@app.route('/leaderboard')
+def leaderboard():
+     if 'username' not in session:
+         return redirect(url_for('log_in'))
+     return render_template("leaderboard.html")
+
+@app.route('/leaderboard_data')
+def get_leaderboard_data():
+        response = supabase.from_('leaderboard').select(
+        'score, users(username)'
+        ).order(
+            'score', desc=True
+        ).execute()
+        leaderboard_data = response.data
+        current_username = session["username"]
+        formatted_data = [
+            {
+                'username': "You" if current_username and player['users']['username'] == current_username else player['users']['username'],
+                'score': player['score']
+            } 
+            for player in leaderboard_data
+        ]
+        return jsonify(formatted_data)
 
 @app.route('/image', methods=['POST'])
 def image():

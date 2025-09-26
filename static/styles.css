@@ -520,3 +520,74 @@ body.login-page {
       from { transform: rotate(0deg); }
       to { transform: rotate(360deg); }
   }
+
+  /*--- leaderboard --- */
+
+  .leaderboard-box {
+    width: 100%;
+    padding: 1.5rem;
+    box-sizing: border-box;
+    margin-bottom: 2rem;
+    
+    background: rgba(21, 23, 43, 0.5);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border-radius: 20px;
+}
+
+.leaderboard-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.leaderboard-item {
+    display: flex;
+    align-items: center;
+    padding: 1rem 0.5rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    transition: background-color 0.3s ease;
+}
+
+.leaderboard-item:last-child {
+    border-bottom: none;
+}
+
+.leaderboard-rank {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--subtle-gray);
+    width: 3rem;
+    text-align: center;
+}
+
+.leaderboard-user {
+    font-size: 1.1rem;
+    font-weight: 500;
+    text-align: left;
+    flex-grow: 1; /* Takes up remaining space */
+}
+
+.leaderboard-score {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--accent-blue);
+}
+
+/* Highlight for the current user */
+.leaderboard-item.current-user {
+    background-color: rgba(77, 171, 247, 0.15);
+    border-radius: 12px;
+    margin: 0.5rem 0;
+    border-bottom: none;
+}
+
+.leaderboard-item.current-user .leaderboard-rank,
+.leaderboard-item.current-user .leaderboard-user {
+    color: var(--text-color);
+}
+
+.leaderboard-item.current-user .leaderboard-score {
+    color: var(--radar-green);
+}
